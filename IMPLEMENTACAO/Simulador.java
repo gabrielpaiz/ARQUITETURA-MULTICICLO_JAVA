@@ -9,7 +9,7 @@ public class Simulador{
     public static String decToBinario(String dec, int tam){
         String ret = "";
         int iDec = Integer.parseInt(dec);
-        if(iDec > 0){
+        if(iDec >= 0){
             for(int i = 0;i<tam;i++){
                 ret = String.valueOf(iDec%2) + ret;
                 iDec = iDec/2;
@@ -62,7 +62,7 @@ public class Simulador{
             case "$sp": return "11101";
             case "$fp": return "11110";
             case "$ra": return "11111";
-            default: System.out.println("Deu na busca dos registradores um erro!!!");break;
+            default: System.out.println("Deu na busca dos registradores um erro!!!"+ reg);break;
         }
         return "";
     }
@@ -73,6 +73,7 @@ public class Simulador{
         String ret = "";
         inst = inst.replace(",", " ").replace("  ", " ");
         String [] vetInst = inst.split(" ");
+        String [] aux;
 
         while(control){
             switch(vetInst[i]){
@@ -92,6 +93,39 @@ public class Simulador{
                     ret += decToBinario(vetInst[i+3], 16);
                     control = false;
                     break;
+                case "lw":
+                    ret += "100011";
+                    aux = vetInst[i+2].replace("(", "/").replace(")", "").split("/");
+                    ret += qRegistrador(aux[1]);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += decToBinario(aux[0], 16);
+                    control = false;
+                    break;
+                case "sw":
+                    ret += "101011";
+                    aux = vetInst[i+2].replace("(", "/").replace(")", "").split("/");
+                    ret += qRegistrador(aux[1]);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += decToBinario(aux[0], 16);
+                    control = false;
+                    break;
+                case "and":
+                    ret += "000000";
+                    ret += qRegistrador(vetInst[i+2]);
+                    ret += qRegistrador(vetInst[i+3]);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += "00000";
+                    ret += decToBinario("36", 6); 
+                    control = false;
+                    break;
+                case "sll":
+                    ret += "000000";
+                    ret += "00000";
+                    ret += qRegistrador(vetInst[i+2]);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += decToBinario(vetInst[i+3], 5);
+                    ret += "000000";
+
                 
                 default: System.out.println("Deu erro no switch do decoder");
                          control = false;
@@ -179,6 +213,6 @@ public class Simulador{
         data = getData(linhas);
 
         System.out.println(decoder(code[0], code));
-        System.out.println(decToBinario("-10", 6));
+        System.out.println(decToBinario("0", 10));
     }
 }
