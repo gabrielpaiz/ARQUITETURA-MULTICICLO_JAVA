@@ -1,0 +1,12 @@
+.data
+A: .ascii "eu amo nicco!\0"
+tam: .word 13
+.text
+.globl main
+
+main:
+    la $a0, A
+	la $a1, tam
+	
+	lw $a1, 0($a1)
+	div	$t0, $a1, 4
