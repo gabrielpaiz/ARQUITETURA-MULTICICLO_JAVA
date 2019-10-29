@@ -5,8 +5,14 @@ tam: .word 13
 .globl main
 
 main:
-	sll $sp, $zero, 1
-	la $a1, tam
-	
+
+
+	ori $sp, $zero, 1
+	addu $a1, $t0, $t1
+
+top:
+
+
+
 	lw $a1, 0($a1)
-	div	$t0, $a1, 4
+	div $t0, $a1, 4

@@ -67,7 +67,7 @@ public class Simulador{
         return "";
     }
 
-    public static String decoder(String inst, String [] code){
+    public static String decoder(String inst, List code){
         Boolean control = true;
         int i = 0;
         String ret = "";
@@ -125,8 +125,24 @@ public class Simulador{
                     ret += qRegistrador(vetInst[i+1]);
                     ret += decToBinario(vetInst[i+3], 5);
                     ret += "000000";
-
-                
+                    control = false;
+                    break;
+                case "srl":
+                    ret += "000000";
+                    ret += "00000";
+                    ret += qRegistrador(vetInst[i+2]);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += decToBinario(vetInst[i+3], 5);
+                    ret += "000010";
+                    control = false;
+                    break;
+                case "ori":
+                    ret += decToBinario("13", 6);
+                    ret += qRegistrador(vetInst[i+2]);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += decToBinario(vetInst[i+3], 16);
+                    control = false;
+                    break;
                 default: System.out.println("Deu erro no switch do decoder");
                          control = false;
                          break;
@@ -141,7 +157,7 @@ public class Simulador{
         return -1;
     }
 
-    public static String[] getData(String linhas){
+    public static List getData(String linhas){
         int comeco = 0;
         int fim = linhas.length();
         String [] data;
@@ -160,19 +176,18 @@ public class Simulador{
         }    
 
         data = linhas.substring(comeco, fim).split("\n");
-        System.out.println(data[0]);
+        List<String> listData = new ArrayList<String>(Arrays.asList(data));
     
-        return data;
+        return listData;
     }
 
-    public static String[] getCodigo(String linhas){
+    public static List getCodigo(String linhas){
         int comeco = 0;
         int fim = linhas.length();
-        String [] code;
         Boolean aux = false;
 
         for(int  i = 0; i<linhas.length()-6; i++){
-            if(linhas.substring(i, i+6).equals("main:\n") && !aux){
+            if(linhas.substring(i, i+5).equals("main\n") && !aux){
                 comeco = i+6;
                 aux = true;
             }
@@ -182,17 +197,35 @@ public class Simulador{
             }
 
         }
-        code = linhas.substring(comeco, fim).trim().split("\n");
-        System.out.println(code[0]);
 
-        return code;
+        String [] code = linhas.substring(comeco, fim).trim().split("\n");
+        String ajuste;
+        List<String> listCode = new ArrayList<String>(Arrays.asList(code));
+
+        // Para retirar os vetores em branco
+        while(listCode.contains("")){
+            listCode.remove("");
+        }  
+
+        // Esse for é colocar a label na mesma linha do codigo
+        for(int i = 0; i<listCode.size();i++){
+            if(listCode.get(i).charAt(listCode.get(i).length()-1) == ':'){
+                ajuste = listCode.remove(i).trim().replace(":", "") + " " +listCode.remove(i).trim(); 
+                listCode.add(i, ajuste);
+            }
+            listCode.add(i, listCode.remove(i).trim());
+        }
+
+        return listCode;
     }
 
     public static void main(String [] args){
-        ArrayList<String> linhasCode= new ArrayList<String>();
+        List<String> code = new ArrayList<String>();
+        List<String> data = new ArrayList<String>();
         String linhas = "";
-        String[] code;
-        String[] data;
+
+
+        //Leitura do arquivo
         try{
             FileReader arq = new FileReader("teste.mips");
             BufferedReader lerArq = new BufferedReader(arq);
@@ -207,12 +240,16 @@ public class Simulador{
             System.err.printf("Erro na abertura do arquivo: %s.\n",
               e.getMessage());
         }
-        //System.out.println(linhas);
+
 
         code = getCodigo(linhas);
         data = getData(linhas);
 
-        System.out.println(decoder(code[0], code));
-        System.out.println(decToBinario("0", 10));
+        System.out.println(code.toString());
+        System.out.println(data.toString());
+
+        System.out.println(decoder(code.get(1), code));
+
+        //System.out.println(decToBinario("0", 10));
     }
 }
