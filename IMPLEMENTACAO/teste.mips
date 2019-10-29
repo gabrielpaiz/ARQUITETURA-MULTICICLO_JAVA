@@ -6,8 +6,8 @@ tam: .word 13
 
 main:
 
-
-	ori $sp, $zero, 1
+	beq $t0, $t5, top
+	lui $sp, 16
 	addu $a1, $t0, $t1
 
 top:

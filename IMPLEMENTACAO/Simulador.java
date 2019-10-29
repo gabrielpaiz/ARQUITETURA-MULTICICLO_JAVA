@@ -67,7 +67,7 @@ public class Simulador{
         return "";
     }
 
-    public static String decoder(String inst, List code){
+    public static String decoder(String inst, List<String> code, int pc){
         Boolean control = true;
         int i = 0;
         String ret = "";
@@ -143,8 +143,30 @@ public class Simulador{
                     ret += decToBinario(vetInst[i+3], 16);
                     control = false;
                     break;
-                default: System.out.println("Deu erro no switch do decoder");
-                         control = false;
+                case "lui":
+                    ret += decToBinario("15", 6);
+                    ret += "00000";
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += decToBinario(vetInst[i+2], 16);
+                    control = false;
+                    break;
+                case "beq":
+                    ret += decToBinario("4", 6);
+                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+2]);
+                    for(int j = 0;j<code.size();j++){
+                        if( (code.get(j).substring(0, (vetInst[i+3].length()))).equals(vetInst[i+3])){
+                            pc = j - (pc+1);
+                            break;
+                        }else{
+                            pc = 0;
+                        }   
+                    }
+                    ret += decToBinario(String.valueOf(pc), 16);
+                    control = false;
+                    break;
+                default: System.out.println("Entrou no tratamento de label, se não tem resposta o problema é no Decoder");
+                         i++;
                          break;
             }
         }
@@ -157,7 +179,8 @@ public class Simulador{
         return -1;
     }
 
-    public static List getData(String linhas){
+    public static List getData(String linhas)//Cria o vetor de String aonde fica os dados a serem gravados na memoria
+    {
         int comeco = 0;
         int fim = linhas.length();
         String [] data;
@@ -181,7 +204,8 @@ public class Simulador{
         return listData;
     }
 
-    public static List getCodigo(String linhas){
+    public static List getCodigo(String linhas)// Cria o vetor de String aonde fica o codigo inteiro do programa
+    {
         int comeco = 0;
         int fim = linhas.length();
         Boolean aux = false;
@@ -205,7 +229,9 @@ public class Simulador{
         // Para retirar os vetores em branco
         while(listCode.contains("")){
             listCode.remove("");
-        }  
+        } 
+        
+        
 
         // Esse for é colocar a label na mesma linha do codigo
         for(int i = 0; i<listCode.size();i++){
@@ -248,7 +274,7 @@ public class Simulador{
         System.out.println(code.toString());
         System.out.println(data.toString());
 
-        System.out.println(decoder(code.get(1), code));
+        System.out.println(decoder(code.get(0), code, 0));
 
         //System.out.println(decToBinario("0", 10));
     }
