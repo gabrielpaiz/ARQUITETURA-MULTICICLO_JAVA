@@ -1,4 +1,4 @@
-# ARQUITETURA-MULTICICLO_JAVA
+# ARQUITETURA-MONOCICLO_JAVA
 
 Oque cada um pode/quer fazer:
 
