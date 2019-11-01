@@ -5,7 +5,7 @@ tam: .word 13
 .globl main
 
 main:
-
+	j top
 	beq $t0, $t5, top
 	lui $sp, 16
 	addu $a1, $t0, $t1
@@ -15,4 +15,4 @@ top:
 
 
 	lw $a1, 0($a1)
-	div $t0, $a1, 4
+	addiu $t0, $a1, 4
