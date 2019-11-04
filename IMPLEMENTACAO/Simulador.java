@@ -33,7 +33,26 @@ public class Simulador{
         }    
 
         data = linhas.substring(comeco, fim).split("\n");
+        
         List<String> listData = new ArrayList<String>(Arrays.asList(data));
+        List<List> matData = new ArrayList<List>();
+
+        for(int i = 0;i<listData.size();i++){
+            listData.set(i,listData.get(i).replace(".word", ""));
+        }
+        String [] strAux;
+
+        for(int i = 0;i<listData.size();i++){
+            matData.add(Arrays.asList(listData.get(i).split(" ")));
+        }
+
+        System.out.println(matData);
+        /*for(int i = 0; i<matData.size();i++){
+            while(matData.get(i).contains("")){
+                matData.get(i).remove("");
+            }
+        }*/
+
     
         return listData;
     }
@@ -104,6 +123,7 @@ public class Simulador{
 
         code = getCodigo(linhas);
         data = getData(linhas);
+
 
         Decoder dec = new Decoder(code);
 

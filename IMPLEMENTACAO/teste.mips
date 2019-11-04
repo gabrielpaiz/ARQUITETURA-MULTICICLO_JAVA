@@ -1,5 +1,4 @@
 .data
-A: .ascii "eu amo nicco!\0"
 tam: .word 13
 .text
 .globl main
