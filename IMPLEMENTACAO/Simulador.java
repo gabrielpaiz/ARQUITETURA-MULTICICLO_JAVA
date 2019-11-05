@@ -35,29 +35,12 @@ public class Simulador{
         data = linhas.substring(comeco, fim).split("\n");
         
         List<String> listData = new ArrayList<String>(Arrays.asList(data));
-        List<List> matData = new ArrayList<List>();
-
-        for(int i = 0;i<listData.size();i++){
-            listData.set(i,listData.get(i).replace(".word", ""));
-        }
-        String [] strAux;
-
-        for(int i = 0;i<listData.size();i++){
-            matData.add(Arrays.asList(listData.get(i).split(" ")));
-        }
-
-        System.out.println(matData);
-        /*for(int i = 0; i<matData.size();i++){
-            while(matData.get(i).contains("")){
-                matData.get(i).remove("");
-            }
-        }*/
 
     
         return listData;
     }
 
-    public static List getCodigo(String linhas)// Cria o vetor de String aonde fica o codigo inteiro do programa
+    public static List getCodigo(String linhas, List data)// Cria o vetor de String aonde fica o codigo inteiro do programa
     {
         int comeco = 0;
         int fim = linhas.length();
@@ -95,6 +78,28 @@ public class Simulador{
             listCode.add(i, listCode.remove(i).trim());
         }
 
+        String lui = "lui "+"$at, "+ "0";
+        String ori = "";
+        int posicaoData = 0;
+
+        for(int i = 0; i<listCode.size();i++){
+            if(listCode.get(i).substring(0, 2).equals("la")){
+                for(int j = 0;j<data.size();j++){
+                    String [] splitJ = data.get(j).toString().split(" ");
+                    if(listCode.get(i).contains(splitJ[0].replace(":",""))){
+                            ori = "ori "+ listCode.get(i).substring(3,7) + " $at, " + posicaoData;
+                    }
+                    posicaoData += splitJ.length-2;
+                }
+                listCode.remove(i);
+                listCode.add(i, lui);
+                listCode.add(i+1, ori);
+                posicaoData = 0;
+            }
+        }
+
+        System.out.println(listCode);
+
         return listCode;
     }
 
@@ -121,8 +126,9 @@ public class Simulador{
               e.getMessage());
         }
 
-        code = getCodigo(linhas);
         data = getData(linhas);
+        code = getCodigo(linhas, data);
+
 
 
         Decoder dec = new Decoder(code);

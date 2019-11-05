@@ -1,4 +1,5 @@
 .data
+A: .word 0 4 7
 tam: .word 13
 .text
 .globl main
@@ -8,6 +9,7 @@ main:
 	beq $t0, $t5, top
 	lui $sp, 16
 	addu $a1, $t0, $t1
+	la $t1, tam
 
 top:
 
