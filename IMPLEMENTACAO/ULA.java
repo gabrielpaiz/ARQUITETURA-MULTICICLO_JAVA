@@ -1,69 +1,64 @@
+import java.util.*;
 public class ULA {
-    public int Zero = 0; //uma das saidas da ula
+    public int Zero = 0; //uma das saidas da ula,se for beq,PCSrc manda sinal p cá
 
     public ULA(){
          
     }
 
-    public int saida(){
-        /* Vamos fazer todas as operações aqui dentro
-        * Ultilizando as entradas e a op que recebemos
-        * pode ser Switch Case
-        * ex: Switch(op){case 0: saida = ent1 + ent2;} ou pode fazer de outro jeito
-        * nós alteraremos a variavel zero aqui tbm, quando nescessario.
-        */
-
-        return saida;
-    }
-
     public int som(int a,int b){
+        Zero = 0;
         return a+b;
     } 
 
     public int sub(int a,int b){
+        Zero = 1;
         return a-b;
     }
    
     public int mult(int a,int b){
+        Zero = 0;
         return a*b;
     }
 
     public int div(int a,int b){
+        Zero = 0;
         return a/b;
     }
 	
     public int srl(int a,int qunt){
-       return a^(qunt/2);
+       Zero = 0;
+       return (int) (a/(Math.pow(2,qunt)));
     }
 
     public int sll(int a,int qunt){
-       return a^(qunt*2);
-    }
-
-    public int neg(int a){
-        return ~a;
+        Zero = 0;
+        return (int) (a*(Math.pow(2,qunt)));
     }
 
     public int or(int a,int b){
+        Zero = 0;
         return a & b;
     }
 
     public int and(int a,int b){
+        Zero = 0;
         return a | b;
     }
 
-    public void op() {
+    public int saida(int a,int b, int operacao) {
 		
 		switch(operacao) {
-		case 0: som(); break;
-		case 1: sub(); break;
-		case 2: mult(); break;
-		case 3: div(); break;
-		case 4: srl(); break;
-		case 5: sll(); break;
-		case 6: neg(); break;
-		case 7: or(); break;
-		case 8: and(); break;
+		case 0: return som(a,b); 
+		case 1: return sub(a,b); 
+		case 2: return mult(a,b); 
+		case 3: return div(a,b); 
+		case 4: return srl(a,b); 
+		case 5: return sll(a,b); 
+		// falta operação ainda
+		case 7: return or(a,b); 
+		case 8: return and(a,b); 
+        default: System.out.println("ERRO!!!!!"); return -1;
 		}
 		
 	}
