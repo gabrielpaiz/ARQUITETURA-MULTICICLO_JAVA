@@ -31,12 +31,12 @@ public class ULA {
 		case 0000: som(); break;
 		case 0001: sub(); break;
 		case 0010: mult(); break;
-        case 0011: div(); break;
-        case 0100: srl(); break;
-        case 0101: sll(); break;
-        case 0110: neg(); break;
-        case 0111: or(); break;
-        case 1000: and(); break;
+		case 0011: div(); break;
+		case 0100: srl(); break;
+		case 0101: sll(); break;
+		case 0110: neg(); break;
+		case 0111: or(); break;
+		case 1000: and(); break;
 		}
 		
 	}
