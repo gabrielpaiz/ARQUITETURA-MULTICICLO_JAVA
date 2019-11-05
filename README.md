@@ -4,7 +4,7 @@ Oque cada um pode/quer fazer:
 
 { Leitura de arquivo e decodificação - Gabriel
 
-ULA - "A definir"
+ULA - Julia
 
 Registradores - "A definir"
 
