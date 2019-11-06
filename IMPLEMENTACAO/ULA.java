@@ -12,8 +12,13 @@ public class ULA {
     } 
 
     public int sub(int a,int b){
-        Zero = 1;
-        return a-b;
+        int c=a-b;
+        if (c==0){
+            Zero=1;
+        }else{
+            Zero=0;
+        }   
+        return c;
     }
    
     public int mult(int a,int b){
@@ -26,7 +31,7 @@ public class ULA {
         return a/b;
     }
 	
-    public int srl(int a,int qunt){
+     public int srl(int a,int qunt){
        Zero = 0;
        return (int) (a/(Math.pow(2,qunt)));
     }
@@ -46,19 +51,19 @@ public class ULA {
         return a | b;
     }
 
+
     public int saida(int a,int b, int operacao) {
 		
 		switch(operacao) {
-		case 0: return som(a,b); 
-		case 1: return sub(a,b); 
-		case 2: return mult(a,b); 
-		case 3: return div(a,b); 
+		case 0: return and(a,b);
+        	case 1: return or(a,b); 
+		case 2: return som(a,b); 
+		case 3: return mult(a,b);  
 		case 4: return srl(a,b); 
 		case 5: return sll(a,b); 
-		// falta operação ainda
-		case 7: return or(a,b); 
-		case 8: return and(a,b); 
-        default: System.out.println("ERRO!!!!!"); return -1;
+       	 	case 6: return sub(a,b); 
+        	case 7: return div(a,b);
+        	default: System.out.println("ERRO!!!!!"); return -1;
 		}
 		
 	}
