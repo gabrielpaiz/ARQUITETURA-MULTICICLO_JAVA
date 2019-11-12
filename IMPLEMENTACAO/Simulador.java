@@ -78,16 +78,19 @@ public class Simulador{
             listCode.add(i, listCode.remove(i).trim());
         }
 
-        String lui = "lui "+"$at, "+ "0";
-        String ori = "";
+        //String lui = "lui "+"$at, "+ "0";
+        //String ori = "";
+        //String posicaoLa = "";
         int posicaoData = 0;
+        //int laJaTrocados = 0;
 
-        for(int i = 0; i<listCode.size();i++){
+        /*for(int i = 0; i<listCode.size();i++){
             if(listCode.get(i).substring(0, 2).equals("la")){
+                posicaoLa += Integer.toString(i-laJaTrocados) + "-";
                 for(int j = 0;j<data.size();j++){
                     String [] splitJ = data.get(j).toString().split(" ");
                     if(listCode.get(i).contains(splitJ[0].replace(":",""))){
-                            ori = "ori "+ listCode.get(i).substring(3,7) + " $at, " + posicaoData;
+                        ori = "ori "+ listCode.get(i).substring(3,7) + " $at, " + posicaoData*4;
                     }
                     posicaoData += splitJ.length-2;
                 }
@@ -95,10 +98,11 @@ public class Simulador{
                 listCode.add(i, lui);
                 listCode.add(i+1, ori);
                 posicaoData = 0;
+                laJaTrocados++;
             }
         }
-
-        System.out.println(listCode);
+        listCode.add(posicaoLa);
+        System.out.println(listCode);*/
 
         return listCode;
     }
@@ -129,6 +133,7 @@ public class Simulador{
         data = getData(linhas);
         code = getCodigo(linhas, data);
 
+        System.out.println(code.toString());
 
 
         Decoder dec = new Decoder(code);
@@ -136,7 +141,7 @@ public class Simulador{
         String [] memoriaIntrucao = dec.decoder(); // Isso são todas as instruçoes do codigo em binario
         String [] instHex = dec.decoderHex(); // Isso é todas as instruçoes do codigo em hexa
 
-        for(int i = 0; i<memoriaIntrucao.length ;i++){ 
+        for(int i = 0; i<memoriaIntrucao.length;i++){ 
             System.out.println(memoriaIntrucao[i]);
         }
         System.out.print("\n");

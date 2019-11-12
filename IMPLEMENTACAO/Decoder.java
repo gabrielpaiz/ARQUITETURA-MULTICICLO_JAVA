@@ -6,7 +6,7 @@ public class Decoder{
 
     public Decoder(List code){
         this.code = code;
-        instruction = new String[code.size()];
+        instruction = new String[code.size()/*-1*/];
     }
 
     public String decToBinario(String dec, int tam){
@@ -82,50 +82,50 @@ public class Decoder{
             switch(vetInst[i]){
                 case "addu":
                     ret += "000000";
-                    ret += qRegistrador(vetInst[i+2]);
-                    ret += qRegistrador(vetInst[i+3]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+3]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += "00000";
                     ret += "100001";
                     control = false;
                     break;
                 case "addiu":
                     ret += decToBinario("9", 6);
-                    ret += qRegistrador(vetInst[i+2]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(vetInst[i+3], 16);
                     control = false;
                     break;
                 case "lw":
                     ret += "100011";
                     aux = vetInst[i+2].replace("(", "/").replace(")", "").split("/");
-                    ret += qRegistrador(aux[1]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(aux[1]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(aux[0], 16);
                     control = false;
                     break;
                 case "sw":
                     ret += "101011";
                     aux = vetInst[i+2].replace("(", "/").replace(")", "").split("/");
-                    ret += qRegistrador(aux[1]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(aux[1]); // Coloca o registrador em binario 
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(aux[0], 16);
                     control = false;
                     break;
                 case "and":
                     ret += "000000";
-                    ret += qRegistrador(vetInst[i+2]);
-                    ret += qRegistrador(vetInst[i+3]);
-                    ret += qRegistrador(vetInst[i+1]);
-                    ret += "00000";
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+3]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
+                    ret += "00000"; // Shant
                     ret += decToBinario("36", 6); 
                     control = false;
                     break;
                 case "sll":
                     ret += "000000";
                     ret += "00000";
-                    ret += qRegistrador(vetInst[i+2]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(vetInst[i+3], 5);
                     ret += "000000";
                     control = false;
@@ -133,38 +133,54 @@ public class Decoder{
                 case "srl":
                     ret += "000000";
                     ret += "00000";
-                    ret += qRegistrador(vetInst[i+2]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(vetInst[i+3], 5);
                     ret += "000010";
                     control = false;
                     break;
                 case "ori":
                     ret += decToBinario("13", 6);
-                    ret += qRegistrador(vetInst[i+2]);
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(vetInst[i+3], 16);
                     control = false;
                     break;
                 case "lui":
                     ret += decToBinario("15", 6);
                     ret += "00000";
-                    ret += qRegistrador(vetInst[i+1]);
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += decToBinario(vetInst[i+2], 16);
                     control = false;
                     break;
                 case "beq":
+                    //String [] linhasLa = code.get(code.size()-1).split("-");
+                    /*for(int porra = 0; porra<linhasLa.length;porra++){
+                        System.out.println(linhasLa[porra]);
+                    }*/
+                    int auxLa = 0;// Para retirar a quantidade de las que tem entre o beq e a label
                     ret += decToBinario("4", 6);
-                    ret += qRegistrador(vetInst[i+1]);
-                    ret += qRegistrador(vetInst[i+2]);
-                    for(int j = 0;j<code.size();j++){
+                    ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
+                    ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
+                    for(int j = 0;j<code.size()-1;j++){
                         if( (code.get(j).substring(0, (vetInst[i+3].length()))).equals(vetInst[i+3])){
-                            line = j - (line+1);
+                           /* if(line < j){
+                                for(int k = 0;k<linhasLa.length;k++){
+                                    if(Integer.parseInt(linhasLa[k]) > line && Integer.parseInt(linhasLa[k]) < j)
+                                        auxLa--;
+                                }
+                            }else{
+                                for(int k = 0;k<linhasLa.length;k++){
+                                    if((Integer.parseInt(linhasLa[k]) < line) && (Integer.parseInt(linhasLa[k]) > j))
+                                        auxLa++;
+                                }
+                                System.out.println("Aqui!");
+                            }*/
+                            line = j - (line+1) + auxLa;
                             break;
-                        }else{
-                            line = 0;
-                        }   
+                        }
                     }
+                    System.out.println(line);
                     ret += decToBinario(String.valueOf(line), 16);
                     control = false;
                     break;
@@ -182,15 +198,15 @@ public class Decoder{
                     break;
                     
                 default: 
-                         i++;
-                         break;
+                    i++;
+                    break;
                 }
             }
             return ret;
         }
 
     public String[] decoder(){
-        for(int i = 0; i<code.size();i++){
+        for(int i = 0; i<code.size()/*-1*/;i++){
             instruction[i] = decoder_One_Line(i);
         }
 
