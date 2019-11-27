@@ -17,7 +17,7 @@ ULA - Julia -
 
 Registradores - "A definir"
 
-Memoria - "A definir"
+Memoria - Pronto
 
 Bloco de Controle - "A definir" }
 
