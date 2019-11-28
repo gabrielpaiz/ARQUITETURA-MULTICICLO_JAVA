@@ -1,20 +1,22 @@
+package main;
+
 public class BlocoControle{
 
     //Sinais aluOp0, aluOp1 e lui vão para o ULA Control, para definir a operação a ser feita na ULA
     //Se lui = 1, ula instruction = sll
     //Senão, aluOp0/1 01 = Type-R (define instruction pela funct), 00 = Lw/Sw/Addiu (intruction = Add)
     //10 = Beq (instruction = Sub), 11 = ori (instruction = or)
-    int regWrite = 0;
-    int regDst = 0;
-    int aluSrc = 0;
-    int branch = 0;
-    int memWrite = 0;
-    int memRead = 0;
-    int memToReg = 0;
-    int aluOp0 = 0;
-    int aluOp1 = 0;
-    int jump = 0;
-    int lui = 0;
+    private int regWrite = 0;
+    private int regDst = 0;
+    private int aluSrc = 0;
+    private int branch = 0;
+    private int memWrite = 0;
+    private int memRead = 0;
+    private int memToReg = 0;
+    private int aluOp0 = 0;
+    private int aluOp1 = 0;
+    private int jump = 0;
+    private int lui = 0;
 
     //Teria como já começar com isso inicializado? Em tese só vai ter uma instância dessa classe.
 
@@ -22,7 +24,7 @@ public class BlocoControle{
     public void controlByOpCode (String opCode) {
 
         //R-type
-        if (opCode == "000000") {
+        if (opCode.equals("000000")) {
 
             regWrite = 1;
             regDst = 1;
@@ -39,7 +41,7 @@ public class BlocoControle{
         }
 
         //Lw
-        if (opCode == "100011") {
+        if (opCode.equals("100011")) {
 
             regWrite = 1;
             regDst = 0;
@@ -56,7 +58,7 @@ public class BlocoControle{
         }
 
         //Sw
-        if (opCode == "101011") {
+        if (opCode.equals("101011")) {
 
             regWrite = 0;
             regDst = 0;
@@ -73,7 +75,7 @@ public class BlocoControle{
         }
 
         //Beq
-        if (opCode == "000100") {
+        if (opCode.equals("000100")) {
 
             regWrite = 0;
             regDst = 0;
@@ -90,7 +92,7 @@ public class BlocoControle{
         }
 
         //Addiu
-        if (opCode == "001001") {
+        if (opCode.equals("001001")) {
 
             regWrite = 1;
             regDst = 0;
@@ -107,7 +109,7 @@ public class BlocoControle{
         }
 
         //Ori - Usa o aluOp0/1 com 11, vai ser usado para passar uma instrução or para a ULA
-        if (opCode == "001101") {
+        if (opCode.equals("001101")) {
 
             regWrite = 1;
             regDst = 0;
@@ -124,7 +126,7 @@ public class BlocoControle{
         }
 
         //J
-        if (opCode == "101011") {
+        if (opCode.equals("101011")) {
 
             regWrite = 0;
             regDst = 0;
@@ -141,7 +143,7 @@ public class BlocoControle{
         }
 
         //Lui - Sinal de controle lui criado para passar a instrução sll para a ULA.
-        if (opCode == "001111") {
+        if (opCode.equals("001111")) {
 
             regWrite = 1;
             regDst = 0;
