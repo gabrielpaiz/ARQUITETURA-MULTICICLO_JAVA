@@ -21,7 +21,7 @@ public class Simulador{
         int fim = linhas.length();
         String [] data;
         Boolean aux = false;
-        
+
 
         for(int i = 0;i<linhas.length()-6;i++){
             if(linhas.substring(i, i+6).equals(".data\n") && !aux){
@@ -32,13 +32,13 @@ public class Simulador{
                 fim = i-1;
                 break;
             }
-        }    
+        }
 
         data = linhas.substring(comeco, fim).split("\n");
-        
+
         List<String> listData = new ArrayList<String>(Arrays.asList(data));
 
-    
+
         return listData;
     }
 
@@ -67,14 +67,14 @@ public class Simulador{
         // Para retirar os vetores em branco
         while(listCode.contains("")){
             listCode.remove("");
-        } 
-        
-        
+        }
+
+
 
         // Esse for é colocar a label na mesma linha do codigo
         for(int i = 0; i<listCode.size();i++){
             if(listCode.get(i).charAt(listCode.get(i).length()-1) == ':'){
-                ajuste = listCode.remove(i).trim().replace(":", "") + " " +listCode.remove(i).trim(); 
+                ajuste = listCode.remove(i).trim().replace(":", "") + " " +listCode.remove(i).trim();
                 listCode.add(i, ajuste);
             }
             listCode.add(i, listCode.remove(i).trim());
@@ -129,7 +129,7 @@ public class Simulador{
             arq.close();
         }catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
-              e.getMessage());
+                    e.getMessage());
         }
 
         data = getData(linhas);
@@ -143,7 +143,7 @@ public class Simulador{
         String [] memoriaIntrucao = dec.decoder(); // Isso são todas as instruçoes do codigo em binario
         String [] instHex = dec.decoderHex(); // Isso é todas as instruçoes do codigo em hexa
 
-        for(int i = 0; i<memoriaIntrucao.length;i++){ 
+        for(int i = 0; i<memoriaIntrucao.length;i++){
             System.out.println(memoriaIntrucao[i]);
         }
         System.out.print("\n");

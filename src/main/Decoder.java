@@ -120,7 +120,7 @@ public class Decoder{
                     ret += qRegistrador(vetInst[i+3]); // Coloca o registrador em binario
                     ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += "00000"; // Shant
-                    ret += decToBinario("36", 6); 
+                    ret += decToBinario("36", 6);
                     control = false;
                     break;
                 case "sll":
@@ -160,7 +160,7 @@ public class Decoder{
                     ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
                     for(int j = 0;j<code.size()-1;j++){ // Percorro O programa inteiro até achar a label
-                        if( (code.get(j).substring(0, (vetInst[i+3].length()))).equals(vetInst[i+3])) 
+                        if( (code.get(j).substring(0, (vetInst[i+3].length()))).equals(vetInst[i+3]))
                         {
                             line = j - (line+1); //Diminua a linha q eu achei com a linha que estou decodificando
                             break;
@@ -173,22 +173,22 @@ public class Decoder{
                     ret += decToBinario("2", 6);
                     int j = 1280;//Nosso PC Começa em 0x500 ou 1280
                     for (String element : code) {
-                         if (vetInst[i + 1].equals(element.substring(0, vetInst[i + 1].length()))) {
+                        if (vetInst[i + 1].equals(element.substring(0, vetInst[i + 1].length()))) {
                             ret += decToBinario(String.valueOf(j), 26);
                             break;
                         }
                         j++;
-                    }    
+                    }
                     control = false;
                     break;
-                    
-                default: 
+
+                default:
                     i++;
                     break;
-                }
             }
-            return ret;
         }
+        return ret;
+    }
 
     public String[] decoder(){
         for(int i = 0; i<code.size()/*-1*/;i++){
