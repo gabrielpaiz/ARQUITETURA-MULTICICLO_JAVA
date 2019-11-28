@@ -124,10 +124,6 @@ public class Simulador{
             final String filePath =
                     System.getProperty("user.dir")+
                             File.separator+
-                            "src"+
-                            File.separator+
-                            "main"+
-                            File.separator+
                             "resources"+
                             File.separator+
                             ARQUIVO
