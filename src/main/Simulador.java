@@ -1,12 +1,15 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
 //Aqui vai ser nossa main class.
 public class Simulador{
+
+    private static String ARQUIVO = "teste.mips";
 
     public static int Mux(int ent0, int ent1, int op){
         if(op == 0){return ent0;}
@@ -118,7 +121,18 @@ public class Simulador{
 
         //Leitura do arquivo
         try{
-            FileReader arq = new FileReader("teste.mips");
+            final String filePath =
+                    System.getProperty("user.dir")+
+                            File.separator+
+                            "src"+
+                            File.separator+
+                            "main"+
+                            File.separator+
+                            "resources"+
+                            File.separator+
+                            ARQUIVO
+                    ;
+            FileReader arq = new FileReader(filePath);
             BufferedReader lerArq = new BufferedReader(arq);
             String l = lerArq.readLine();
             while(l != null){
