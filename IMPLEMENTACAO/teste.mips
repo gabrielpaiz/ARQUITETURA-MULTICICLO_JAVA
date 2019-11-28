@@ -9,10 +9,12 @@ main:
 	beq $t0, $t5, top
 	lui $sp, 16
 	addu $a1, $t0, $t1
+	sll $s1, $s1, 2
 
 
 top:
 
 	lw $a1, 0($a1)
 	addiu $t0, $a1, 4
+	srl $s6, $s6, 6
 	beq $t0, $t5, top

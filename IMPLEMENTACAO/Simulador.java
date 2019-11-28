@@ -13,7 +13,7 @@ public class Simulador{
         return -1;
     }
 
-    public static List getData(String linhas)//Cria o vetor de String aonde fica os dados a serem gravados na memoria
+    public static List<String> getData(String linhas)//Cria o vetor de String aonde fica os dados a serem gravados na memoria
     {
         int comeco = 0;
         int fim = linhas.length();
@@ -40,7 +40,7 @@ public class Simulador{
         return listData;
     }
 
-    public static List getCodigo(String linhas, List data)// Cria o vetor de String aonde fica o codigo inteiro do programa
+    public static List<String> getCodigo(String linhas, List data)// Cria o vetor de String aonde fica o codigo inteiro do programa
     {
         int comeco = 0;
         int fim = linhas.length();

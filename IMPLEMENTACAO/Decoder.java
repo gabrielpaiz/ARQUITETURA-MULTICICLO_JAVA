@@ -154,39 +154,22 @@ public class Decoder{
                     control = false;
                     break;
                 case "beq":
-                    //String [] linhasLa = code.get(code.size()-1).split("-");
-                    /*for(int porra = 0; porra<linhasLa.length;porra++){
-                        System.out.println(linhasLa[porra]);
-                    }*/
-                    int auxLa = 0;// Para retirar a quantidade de las que tem entre o beq e a label
                     ret += decToBinario("4", 6);
                     ret += qRegistrador(vetInst[i+1]); // Coloca o registrador em binario
                     ret += qRegistrador(vetInst[i+2]); // Coloca o registrador em binario
-                    for(int j = 0;j<code.size()-1;j++){
-                        if( (code.get(j).substring(0, (vetInst[i+3].length()))).equals(vetInst[i+3])){
-                           /* if(line < j){
-                                for(int k = 0;k<linhasLa.length;k++){
-                                    if(Integer.parseInt(linhasLa[k]) > line && Integer.parseInt(linhasLa[k]) < j)
-                                        auxLa--;
-                                }
-                            }else{
-                                for(int k = 0;k<linhasLa.length;k++){
-                                    if((Integer.parseInt(linhasLa[k]) < line) && (Integer.parseInt(linhasLa[k]) > j))
-                                        auxLa++;
-                                }
-                                System.out.println("Aqui!");
-                            }*/
-                            line = j - (line+1) + auxLa;
+                    for(int j = 0;j<code.size()-1;j++){ // Percorro O programa inteiro até achar a label
+                        if( (code.get(j).substring(0, (vetInst[i+3].length()))).equals(vetInst[i+3])) 
+                        {
+                            line = j - (line+1); //Diminua a linha q eu achei com a linha que estou decodificando
                             break;
                         }
                     }
-                    System.out.println(line);
                     ret += decToBinario(String.valueOf(line), 16);
                     control = false;
                     break;
                 case "j":
                     ret += decToBinario("2", 6);
-                    int j = 0;
+                    int j = 1280;//Nosso PC Começa em 0x500 ou 1280
                     for (String element : code) {
                          if (vetInst[i + 1].equals(element.substring(0, vetInst[i + 1].length()))) {
                             ret += decToBinario(String.valueOf(j), 26);
