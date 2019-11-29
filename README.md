@@ -1,25 +1,9 @@
-# ARQUITETURA-MONOCICLO_JAVA
+O Trabalho foi feito em java
+Deve estar no diretorio /src para poder compilar e executar
+use o comando  "javac main /*.java" para compilar
+use o comando "java main.Simulador" para executar
 
-Oque cada um pode/quer fazer:
+o programa tem uma parada de execução, após ele fazer uma ação do programa mips. Para continuar é só apertar qualquer caracter e entre
 
-{ Leitura de arquivo e decodificação - Gabriel
-
-ULA - Julia -
-    Cod. em Binário:
-    000: and(a,b)
-    001: or(a,b)
-    010: som(a,b)
-    011: mult(a,b)
-    100: srl(a,b)
-    101: sll(a,b)
-    110: sub(a,b)
-    111: div(a,b)
-
-Registradores - "A definir"
-
-Memoria - Pronto
-
-Bloco de Controle - "A definir" }
-
-Se algum de vocês lembrar de fazer alguma coisa, atualize este txt A proposta desde arquivo é mais para organização, para ninguem fazer coisa a mais.
+No nosso ".mips" tem um problema, nos tabulamento não pode ter nenhum espaço.
 
