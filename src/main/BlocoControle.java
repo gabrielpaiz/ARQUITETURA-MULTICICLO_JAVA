@@ -29,7 +29,6 @@ public class BlocoControle{
 
         //R-type
         if (opCode.equals("000000")) {
-            System.out.println("R");
             regWrite = 1;
             regDst = 1;
             aluSrc = 0;
@@ -46,8 +45,6 @@ public class BlocoControle{
 
         //Lw
         if (opCode.equals("100011")) {
-
-            System.out.println("LW");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -64,8 +61,6 @@ public class BlocoControle{
 
         //Sw
         if (opCode.equals("101011")) {
-
-            System.out.println("SW");
             regWrite = 0;
             regDst = 0;
             aluSrc = 1;
@@ -82,8 +77,6 @@ public class BlocoControle{
 
         //Beq
         if (opCode.equals("000100")) {
-
-            System.out.println("BEQ");
             regWrite = 0;
             regDst = 0;
             aluSrc = 0;
@@ -100,8 +93,6 @@ public class BlocoControle{
 
         //Addiu
         if (opCode.equals("001001")) {
-
-            System.out.println("ADDIU");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -119,7 +110,6 @@ public class BlocoControle{
         //Ori - Usa o aluOp0/1 com 11, vai ser usado para passar uma instrução or para a ULA
         if (opCode.equals("001101")) {
 
-            System.out.println("ORI");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -137,7 +127,6 @@ public class BlocoControle{
         //J
         if (opCode.equals("000010")) {
 
-            System.out.println("J");
             regWrite = 0;
             regDst = 0;
             aluSrc = 0;
@@ -154,8 +143,6 @@ public class BlocoControle{
 
         //Lui - Sinal de controle lui criado para passar a instrução sll para a ULA.
         if (opCode.equals("001111")) {
-
-            System.out.println("LUI");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;

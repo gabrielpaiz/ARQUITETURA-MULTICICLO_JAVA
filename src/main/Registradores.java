@@ -34,7 +34,6 @@ public class Registradores{
     }
 
     public void writeBack(int dataW){
-        System.out.println(dataW+" "+controlRegWrite);
         if(controlRegWrite == 1){
             registers.put(regW, dataW);
         }
