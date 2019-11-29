@@ -73,6 +73,8 @@ public class Simulador{
             final String filePath =
                     System.getProperty("user.dir")+
                             File.separator+
+                            "main"+
+                            File.separator+
                             "resources"+
                             File.separator+
                             ARQUIVO
@@ -138,7 +140,6 @@ public class Simulador{
             pc = fullAdder.saida(pc, 4, 2);
 
             //prepara numero pro jump
-            System.out.println(jumpNumber);
             jumpNumber = jumpNumber*4;
 
             //Calculo da ULA principal
@@ -146,7 +147,6 @@ public class Simulador{
 
             //prepara numero pro beq
             int pcBEQ = fullAdder.saida((immediate*4), pc, 2);
-            System.out.println(pcBEQ);
             int muxBranch = Mux(pc, pcBEQ, (blcontrol.branch & ulaPrincipal.Zero));
 
             //Arruma Pc se for branch ou jump

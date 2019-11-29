@@ -20,11 +20,6 @@ public class Memoria{
 
     public int entradas(int address,int Writedata,int memRead,int memWrite){
 
-        if(address%4!=0 || address >= 400){
-            System.out.println("Erro!");
-            //System.exit;
-        }
-
         if(memRead==1){
             return memoria.get(address/4);
         }
@@ -36,7 +31,7 @@ public class Memoria{
     }
 
     public String toString(){
-        String s = "         ";
+        String s = "Memoria:\n         ";
         for(int i = 0; i<5;i++){
             s+="(+0x"+Integer.toHexString((4*i))+")     ";
         }
