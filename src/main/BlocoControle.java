@@ -143,6 +143,7 @@ public class BlocoControle{
 
         //Lui - Sinal de controle lui criado para passar a instrução sll para a ULA.
         if (opCode.equals("001111")) {
+            
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;

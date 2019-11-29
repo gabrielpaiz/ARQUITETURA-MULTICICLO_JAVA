@@ -102,6 +102,7 @@ public class Simulador{
 
         int pc = 1280;
         while(true){
+        
             int pcReal = (pc-1280)/4;
 
             if(pcReal == code.size()){
@@ -138,14 +139,16 @@ public class Simulador{
             saidaMux = BlocoControle.aluOp2Mux(blreg.saida2(), immediate, blcontrol.aluSrc);
             saidaMux = BlocoControle.shiftControlMux(saidaMux, shiftNumber , blcontrol.shamt);
 
+
             //pc++
             pc = fullAdder.saida(pc, 4, 2);
 
             //prepara numero pro jump
             jumpNumber = jumpNumber*4;
 
+            int muxLUI = Mux(blreg.saida(), immediate, blcontrol.lui);
             //Calculo da ULA principal
-            int saidaULA = ulaPrincipal.saida(blreg.saida(), saidaMux, aluControl);
+            int saidaULA = ulaPrincipal.saida(muxLUI, saidaMux, aluControl);
 
             //prepara numero pro beq
             int pcBEQ = fullAdder.saida((immediate*4), pc, 2);
@@ -167,7 +170,5 @@ public class Simulador{
             }
 
         }
-        //}
-        // Não tirei os prints para vocês poderem ver como está
     }
 }
