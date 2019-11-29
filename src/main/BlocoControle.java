@@ -20,7 +20,13 @@ public class BlocoControle{
     public int shamt = 0;
     public int reg2TOreg1= 0;
 
-    public BlocoControle(){}
+    private static BlocoControle INSTANCE = new BlocoControle();
+
+    private BlocoControle(){}
+
+    public static BlocoControle getInstance(){
+        return INSTANCE;
+    }
 
     //Teria como já começar com isso inicializado? Em tese só vai ter uma instância dessa classe.
 
