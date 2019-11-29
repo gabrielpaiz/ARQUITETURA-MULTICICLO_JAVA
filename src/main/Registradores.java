@@ -9,7 +9,13 @@ public class Registradores{
     private int regW;
     private int controlRegWrite;
 
-    public Registradores(){
+    private static final Registradores INSTANCE = new Registradores();
+
+    public static Registradores getInstance(){
+        return INSTANCE;
+    }
+
+    private Registradores(){
         /* Preencher essa aqui no contrutor o dicionario com todos so registradores zerados
          *  Usando for mesmo, não fiz ainda pq estou sem saco no momento
          */

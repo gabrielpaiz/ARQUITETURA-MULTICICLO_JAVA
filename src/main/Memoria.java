@@ -5,7 +5,13 @@ import java.util.*;
 public class Memoria{
     ArrayList <Integer> memoria = new ArrayList<Integer> (100);
 
-    public Memoria(){
+    private static final Memoria INSTANCE = new Memoria();
+
+    public static Memoria getInstance(){
+        return INSTANCE;
+    }
+
+    private Memoria(){
         for(int i = 0;i<100;i++){
             memoria.add(0);
         }

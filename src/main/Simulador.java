@@ -62,9 +62,9 @@ public class Simulador{
         List<String> code = new ArrayList<String>();
 
         String linhas = "";
-        Registradores blreg = new Registradores();
-        BlocoControle blcontrol = new BlocoControle();
-        Memoria mem = new Memoria();
+        Registradores blreg = Registradores.getInstance();
+        BlocoControle blcontrol = BlocoControle.getInstance();
+        Memoria mem = Memoria.getInstance();
         ULA ulaPrincipal = new ULA();
         ULA fullAdder = new ULA();
 
@@ -110,18 +110,16 @@ public class Simulador{
                 System.out.print("   "+code.get(i));
                 if(i == pcReal){
                     System.out.print("  <--\n");
-                }else{System.out.print("\n");}
-
-
+                }else {System.out.print("\n");}
             }
-            int writeR = Integer.parseInt(memoriaIntrucao[pcReal].substring(16,21),2);
-            int regUm = Integer.parseInt(memoriaIntrucao[pcReal].substring(6,11),2);
-            int regDois = Integer.parseInt(memoriaIntrucao[pcReal].substring(11,16),2);
+            int writeR = Integer.parseInt(memoriaIntrucao[pcReal].substring(16,21),2); // rd
+            int regUm = Integer.parseInt(memoriaIntrucao[pcReal].substring(6,11),2); // rs
+            int regDois = Integer.parseInt(memoriaIntrucao[pcReal].substring(11,16),2); // rt
             int immediate =  Integer.parseInt(memoriaIntrucao[pcReal].substring(16,32),2);
             int shiftNumber = Integer.parseInt(memoriaIntrucao[pcReal].substring(21,26),2);
             int jumpNumber = Integer.parseInt(memoriaIntrucao[pcReal].substring(6,32),2);
 
-            //Partedo bloco de controle
+            //Parte do bloco de controle
             blcontrol.controlByOpCode(memoriaIntrucao[pcReal].substring(0,6));
 
             int saidaMux = BlocoControle.writeRegMux(regDois, writeR, blcontrol.regDst);
