@@ -13,18 +13,18 @@ public class Memoria{
     }
 
     public int entradas(int address,int Writedata,int memRead,int memWrite){
-    
+
         if(address%4!=0 || address >= 400){
             System.out.println("Erro!");
             //System.exit;
         }
 
         if(memRead==1){
-        return memoria.get(address/4);
+            return memoria.get(address/4);
         }
 
         if(memWrite==1){
-        memoria.set(address/4,Writedata);
+            memoria.set(address/4,Writedata);
         }
         return 0;
     }
@@ -46,7 +46,7 @@ public class Memoria{
                 String spaces = "0x"+Integer.toHexString(count);
                 s+= spaces;
                 for(int j = 0;j<11-spaces.length();j++){
-                s+=" ";
+                    s+=" ";
                 }
             }
             String aux = "0x"+Integer.toHexString(memoria.get(i));

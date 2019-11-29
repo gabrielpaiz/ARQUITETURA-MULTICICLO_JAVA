@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Simulador-MIPS-Monociclo_JAVA:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Simulador_MIPS_Monociclo_JAVA_jar</output-path>
+    <root id="archive" name="Simulador-MIPS-Monociclo_JAVA.jar">
+      <element id="module-output" name="Simulador-MIPS-Monociclo_JAVA" />
+    </root>
+  </artifact>
+</component>

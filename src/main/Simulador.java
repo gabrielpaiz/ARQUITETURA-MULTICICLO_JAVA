@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-//Aqui vai ser nossa main class.
 public class Simulador{
 
     private static String ARQUIVO = "teste.mips";
@@ -18,34 +17,7 @@ public class Simulador{
         return -1;
     }
 
-    public static List<String> getData(String linhas)//Cria o vetor de String aonde fica os dados a serem gravados na memoria
-    {
-        int comeco = 0;
-        int fim = linhas.length();
-        String [] data;
-        Boolean aux = false;
-
-
-        for(int i = 0;i<linhas.length()-6;i++){
-            if(linhas.substring(i, i+6).equals(".data\n") && !aux){
-                comeco = i+6;
-                aux = true;
-            }
-            if(aux && linhas.substring(i, i+5).equals(".text")){
-                fim = i-1;
-                break;
-            }
-        }
-
-        data = linhas.substring(comeco, fim).split("\n");
-
-        List<String> listData = new ArrayList<String>(Arrays.asList(data));
-
-
-        return listData;
-    }
-
-    public static List<String> getCodigo(String linhas, List data)// Cria o vetor de String aonde fica o codigo inteiro do programa
+    public static List<String> getCodigo(String linhas)// Cria o vetor de String aonde fica o codigo inteiro do programa
     {
         int comeco = 0;
         int fim = linhas.length();
@@ -83,41 +55,18 @@ public class Simulador{
             listCode.add(i, listCode.remove(i).trim());
         }
 
-        //String lui = "lui "+"$at, "+ "0";
-        //String ori = "";
-        //String posicaoLa = "";
-        int posicaoData = 0;
-        //int laJaTrocados = 0;
-
-        /*for(int i = 0; i<listCode.size();i++){
-            if(listCode.get(i).substring(0, 2).equals("la")){
-                posicaoLa += Integer.toString(i-laJaTrocados) + "-";
-                for(int j = 0;j<data.size();j++){
-                    String [] splitJ = data.get(j).toString().split(" ");
-                    if(listCode.get(i).contains(splitJ[0].replace(":",""))){
-                        ori = "ori "+ listCode.get(i).substring(3,7) + " $at, " + posicaoData*4;
-                    }
-                    posicaoData += splitJ.length-2;
-                }
-                listCode.remove(i);
-                listCode.add(i, lui);
-                listCode.add(i+1, ori);
-                posicaoData = 0;
-                laJaTrocados++;
-            }
-        }
-        listCode.add(posicaoLa);
-        System.out.println(listCode);*/
-
         return listCode;
     }
 
     public static void main(String [] args){
         List<String> code = new ArrayList<String>();
-        List<String> data = new ArrayList<String>();
 
         String linhas = "";
-
+        Registradores blreg = new Registradores();
+        BlocoControle blcontrol = new BlocoControle();
+        Memoria mem = new Memoria();
+        ULA ulaPrincipal = new ULA();
+        ULA fullAdder = new ULA();
 
         //Leitura do arquivo
         try{
@@ -142,24 +91,83 @@ public class Simulador{
                     e.getMessage());
         }
 
-        data = getData(linhas);
-        code = getCodigo(linhas, data);
-
-        System.out.println(code.toString());
-
+        code = getCodigo(linhas);
 
         Decoder dec = new Decoder(code);
 
         String [] memoriaIntrucao = dec.decoder(); // Isso são todas as instruçoes do codigo em binario
         String [] instHex = dec.decoderHex(); // Isso é todas as instruçoes do codigo em hexa
 
-        for(int i = 0; i<memoriaIntrucao.length;i++){
-            System.out.println(memoriaIntrucao[i]);
+        int pc = 1280;
+        while(true){
+            int pcReal = (pc-1280)/4;
+
+            if(pcReal == code.size()){
+                System.exit(0);
+            }
+            for(int i = 0;i<code.size();i++){
+                System.out.print(instHex[i]+"   ");
+                System.out.print("   "+code.get(i));
+                if(i == pcReal){
+                    System.out.print("  <--\n");
+                }else{System.out.print("\n");}
+
+
+            }
+            int writeR = Integer.parseInt(memoriaIntrucao[pcReal].substring(16,21),2);
+            int regUm = Integer.parseInt(memoriaIntrucao[pcReal].substring(6,11),2);
+            int regDois = Integer.parseInt(memoriaIntrucao[pcReal].substring(11,16),2);
+            int immediate =  Integer.parseInt(memoriaIntrucao[pcReal].substring(16,32),2);
+            int shiftNumber = Integer.parseInt(memoriaIntrucao[pcReal].substring(21,26),2);
+            int jumpNumber = Integer.parseInt(memoriaIntrucao[pcReal].substring(6,32),2);
+
+            //Partedo bloco de controle
+            blcontrol.controlByOpCode(memoriaIntrucao[pcReal].substring(0,6));
+
+            int saidaMux = BlocoControle.writeRegMux(regDois, writeR, blcontrol.regDst);
+
+            //AluContro e MUX para a ULA
+            int aluControl = blcontrol.ulaControl(blcontrol.aluOp0, blcontrol.aluOp1, blcontrol.lui, memoriaIntrucao[pcReal].substring(26,32));
+
+            //Parte da busca no bloco de registradores e MUX para saber se é shift
+            int reg2Toreg2 = Mux(regUm, regDois, blcontrol.reg2TOreg1);
+
+            blreg.busca(reg2Toreg2, regDois, saidaMux, blcontrol.regWrite);
+            saidaMux = BlocoControle.aluOp2Mux(blreg.saida2(), immediate, blcontrol.aluSrc);
+            saidaMux = BlocoControle.shiftControlMux(saidaMux, shiftNumber , blcontrol.shamt);
+
+            //pc++
+            pc = fullAdder.saida(pc, 4, 2);
+
+            //prepara numero pro jump
+            System.out.println(jumpNumber);
+            jumpNumber = jumpNumber*4;
+
+            //Calculo da ULA principal
+            int saidaULA = ulaPrincipal.saida(blreg.saida(), saidaMux, aluControl);
+
+            //prepara numero pro beq
+            int pcBEQ = fullAdder.saida((immediate*4), pc, 2);
+            System.out.println(pcBEQ);
+            int muxBranch = Mux(pc, pcBEQ, (blcontrol.branch & ulaPrincipal.Zero));
+
+            //Arruma Pc se for branch ou jump
+            pc = Mux(muxBranch, jumpNumber, blcontrol.jump);
+
+            int saidaMemoria = mem.entradas(saidaULA, blreg.saida2(), blcontrol.memRead, blcontrol.memWrite);
+            int memToReg = BlocoControle.memToRegMux(saidaULA, saidaMemoria, blcontrol.memToReg);
+
+            blreg.writeBack(memToReg);
+            System.out.println(blreg.toString()+"\n"+mem.toString());
+
+            Scanner teclado = new Scanner(System.in);
+            String para = teclado.next();
+            for(int i = 0;i<7;i++){
+                System.out.println("\r");
+            }
+
         }
-        System.out.print("\n");
-        for(int i = 0; i<instHex.length ;i++){
-            System.out.println(instHex[i]);
-        }
+        //}
         // Não tirei os prints para vocês poderem ver como está
     }
 }

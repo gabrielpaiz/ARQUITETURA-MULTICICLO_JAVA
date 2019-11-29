@@ -6,17 +6,21 @@ public class BlocoControle{
     //Se lui = 1, ula instruction = sll
     //Senão, aluOp0/1 01 = Type-R (define instruction pela funct), 00 = Lw/Sw/Addiu (intruction = Add)
     //10 = Beq (instruction = Sub), 11 = ori (instruction = or)
-    private int regWrite = 0;
-    private int regDst = 0;
-    private int aluSrc = 0;
-    private int branch = 0;
-    private int memWrite = 0;
-    private int memRead = 0;
-    private int memToReg = 0;
-    private int aluOp0 = 0;
-    private int aluOp1 = 0;
-    private int jump = 0;
-    private int lui = 0;
+    public int regWrite = 0;
+    public int regDst = 0;
+    public int aluSrc = 0;
+    public int branch = 0;
+    public int memWrite = 0;
+    public int memRead = 0;
+    public int memToReg = 0;
+    public int aluOp0 = 0;
+    public int aluOp1 = 0;
+    public int jump = 0;
+    public int lui = 0;
+    public int shamt = 0;
+    public int reg2TOreg1= 0;
+
+    public BlocoControle(){}
 
     //Teria como já começar com isso inicializado? Em tese só vai ter uma instância dessa classe.
 
@@ -25,7 +29,7 @@ public class BlocoControle{
 
         //R-type
         if (opCode.equals("000000")) {
-
+            System.out.println("R");
             regWrite = 1;
             regDst = 1;
             aluSrc = 0;
@@ -43,6 +47,7 @@ public class BlocoControle{
         //Lw
         if (opCode.equals("100011")) {
 
+            System.out.println("LW");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -60,6 +65,7 @@ public class BlocoControle{
         //Sw
         if (opCode.equals("101011")) {
 
+            System.out.println("SW");
             regWrite = 0;
             regDst = 0;
             aluSrc = 1;
@@ -77,6 +83,7 @@ public class BlocoControle{
         //Beq
         if (opCode.equals("000100")) {
 
+            System.out.println("BEQ");
             regWrite = 0;
             regDst = 0;
             aluSrc = 0;
@@ -94,6 +101,7 @@ public class BlocoControle{
         //Addiu
         if (opCode.equals("001001")) {
 
+            System.out.println("ADDIU");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -111,6 +119,7 @@ public class BlocoControle{
         //Ori - Usa o aluOp0/1 com 11, vai ser usado para passar uma instrução or para a ULA
         if (opCode.equals("001101")) {
 
+            System.out.println("ORI");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -126,8 +135,9 @@ public class BlocoControle{
         }
 
         //J
-        if (opCode.equals("101011")) {
+        if (opCode.equals("000010")) {
 
+            System.out.println("J");
             regWrite = 0;
             regDst = 0;
             aluSrc = 0;
@@ -145,6 +155,7 @@ public class BlocoControle{
         //Lui - Sinal de controle lui criado para passar a instrução sll para a ULA.
         if (opCode.equals("001111")) {
 
+            System.out.println("LUI");
             regWrite = 1;
             regDst = 0;
             aluSrc = 1;
@@ -183,33 +194,65 @@ public class BlocoControle{
         return -1;
     }
 
+    public static int shiftControlMux(int ent0, int ent1, int shamt){
+        if(shamt == 0){return ent0;}
+        if(shamt == 1){return ent1;}
+        if(shamt == 2){return 16;}
+        System.out.println("Erro na operação de controle dos shift");
+        return -1;
+    }
+
     //Define a operação da ULA com base nos inputs de controle. Retorna operação conforme códigos do switch do ULA.java
     // funct[6]
-    public static int ulaControl(int ulaOp0, int ulaOp1, int lui, String funct){
-        if(lui == 1)
+    public int ulaControl(int ulaOp0, int ulaOp1, int lui, String funct){
+        if(lui == 1){
+            shamt = 2;
+            reg2TOreg1 = 0;
             return 5;
 
-        else if (ulaOp0 == 0 && ulaOp1 == 0)
+
+        }else if (ulaOp0 == 0 && ulaOp1 == 0){
+            shamt = 0;
+            reg2TOreg1 = 0;
             return 2;
 
-        else if (ulaOp0 == 1 && ulaOp1 == 1)
+        }else if (ulaOp0 == 1 && ulaOp1 == 1){
+            shamt = 0;
+            reg2TOreg1 = 0;
             return 1;
 
-        else if (ulaOp0 == 1 && ulaOp1 == 0)
+        }else if (ulaOp0 == 1 && ulaOp1 == 0){
+            shamt = 0;
+            reg2TOreg1 = 0;
             return 6;
 
-        else if (ulaOp0 == 0 && ulaOp1 == 1)
-            if (funct == "000000")
+        }else if (ulaOp0 == 0 && ulaOp1 == 1){
+            if (funct.equals("000000")){
+                shamt = 1;
+                reg2TOreg1 = 1;
                 return 5;
-            if (funct == "000010")
+            }
+            if (funct.equals("000010")){
+                shamt = 1;
+                reg2TOreg1 = 1;
                 return 4;
-            if (funct == "100000")
+            }
+            if (funct.equals("100001")){
+                shamt = 0;
+                reg2TOreg1 = 0;
                 return 2;
-            if (funct == "100010")
+            }
+            if (funct.equals("100010")){
+                shamt = 0;
+                reg2TOreg1 = 0;
                 return 6;
-            if (funct == "100100")
+            }
+            if (funct.equals("100100")){
+                reg2TOreg1 = 0;
+                shamt = 0;
                 return 0;
-
+            }
+        }
         System.out.println("Erro na escooa de operação da ulaControl!!!");
         return -1;
     }

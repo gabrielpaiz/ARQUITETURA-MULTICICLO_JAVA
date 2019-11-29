@@ -174,10 +174,10 @@ public class Decoder{
                     int j = 1280;//Nosso PC Começa em 0x500 ou 1280
                     for (String element : code) {
                         if (vetInst[i + 1].equals(element.substring(0, vetInst[i + 1].length()))) {
-                            ret += decToBinario(String.valueOf(j), 26);
+                            ret += decToBinario(String.valueOf(j/4), 26);
                             break;
                         }
-                        j++;
+                        j+=4;
                     }
                     control = false;
                     break;

@@ -16,7 +16,7 @@ public class Controle{
             //Carrega os bits da instrução a ser processada.
             for (int i = 0; i < 32; i++)
                 atualInstrucao[i] = memoriaInstrucao[i + (instrucaoLidas * 32)];
-                Memoria test;
+            Memoria test;
 
 
 
